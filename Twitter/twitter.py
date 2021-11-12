@@ -4,7 +4,7 @@ global api
 
 
 def load_auth_file():  # Given authentication file returns a Twitter API object
-    with open('auth.txt') as auth:
+    with open('auth.k') as auth:
         auth_array = auth.readlines()
     auth.close()
     access_token2 = auth_array[0].replace("\n", "").strip('"')
@@ -42,12 +42,12 @@ def get_favorite_tweets(api): # Prints the favorite tweets and username
         print(tweet.text + " by " + tweet.user.name)
 
 
-def search_tweets(api, query = "#2021",num = 100 ):  # usinght e
+def search_tweets(api, query = "Happy",num =100 ):  # usinght e
     newFile = open('ans.txt', 'w', encoding="utf-8")
     fileWriter = csv.writer(newFile)
     fileWriter.writerow(["Username", "followers", " friends" ,"Created", "Text", "Retweet-count", "Hashtag"])
 
-    for tweet in api.search_tweets(q=query, count= num):
+    for tweet in api.search_tweets(q=query, count= 100):
         created = tweet.created_at  # tweet created
         text = tweet.text  # tweet text
         retweetcount = tweet.retweet_count  # re-tweet count
@@ -72,5 +72,5 @@ def get_query(): # provides a brief overview on using twitter queries and return
 
 
 api = load_auth_file()
-get_favorite_tweets(api)
+#get_favorite_tweets(api)
 search_tweets(api)

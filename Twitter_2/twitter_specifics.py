@@ -43,7 +43,7 @@ def get_favorite_tweets(api): # Prints the favorite tweets and username
 
 
 def search_tweets(api, query = "Happy",num =100 ):  # usinght e
-    newFile = open('ans.txt', 'w', encoding="utf-8")
+    newFile = open('keyword_results.txt', 'w', encoding="utf-8")
     fileWriter = csv.writer(newFile)
     fileWriter.writerow(["Username", "followers", " friends" ,"Created", "Text", "Retweet-count", "Hashtag"])
 
@@ -71,7 +71,43 @@ def get_query(): # provides a brief overview on using twitter queries and return
     return q
 
 
+def mentions_timeline(api):   # Returns the 20 most recent tweets in timeline
+    mentions = api.mentions_timeline()
+    array = {}
+    key_array = []
+    for tweet in mentions:
+        if tweet.retweet_count not in array.keys():
+            array[tweet.retweet_count] = [tweet.text]
+            key_array.append(int(tweet.retweet_count))
+        else:
+            array[tweet.retweet_count] += [tweet.text]
+    print(key_array)
+    print(type(key_array))
+    key_array.reverse()
+
+    #for i in range (len(key_array)):
+        #curr = key_array[i]
+        #print (curr)
+    print(key_array)
+
+
+
+
+
+def user_timeline(api):        # Returns the 20 most recent tweets in timeline
+    all_tweets= api.user_timeline()
+    array= {}
+    # Keep a dictionary with retweeet count and actaully tweet.
+    # In the end sort the
+    for tweet in all_tweets:
+        if tweet.retweet_count not in array.keys():
+            array[tweet.retweet_count] = [tweet.text]
+        else:
+            array[tweet.retweet_count] += [tweet.text]
+    # Know sort the dictionar based on the retweet count
+    print(array)
+
+
 api = load_auth_file()
-#get_favorite_tweets(api)
-search_tweets(api)
-get_friends_list(api)
+mentions_timeline(api)
+#user_timeline(api)

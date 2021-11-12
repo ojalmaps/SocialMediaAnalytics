@@ -2,7 +2,7 @@ import csv
 import googleapiclient.discovery
 
 # Storing information about the credentials
-developer_key = "AIzaSyDDD_itQ56sG3i03JD_-XPPi_Cmw-1_2so"
+developer_key = input("Enter the API Key")
 api_service_name = "Youtube"
 api_version = "v3"
 

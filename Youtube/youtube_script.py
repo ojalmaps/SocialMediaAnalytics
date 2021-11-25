@@ -14,7 +14,7 @@ def youtube_search(query):  # Given a query
     fileW.writerow(["Title"])
 
     youtube = googleapiclient.discovery.build(api_service_name, api_version, developerKey=developer_key)
-    search_response = youtube.search().list(q=query,part ="id", maxResults=15).execute() # calls search query
+    search_response = youtube.search().list(q = query,part ="id", maxResults=15).execute() # calls search query
     stats = youtube.videos().list( part = "id,contentDetails",myRating ="like").execute()    # calls video query
 
     print(stats)

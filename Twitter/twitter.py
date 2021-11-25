@@ -1,6 +1,11 @@
 import csv
+import matplotlib as plt
+
 import tweepy
+import pandas as pd
 global api
+import unidecode
+from textblob import TextBlob
 
 
 def load_auth_file():  # Given authentication file returns a Twitter API object
@@ -26,28 +31,28 @@ def number_pending_requests():  # Returns the number of pending friend request f
     return numRequest
 
 
-def display_user_profile(user): # Given a user object displays prints profile information
-    print("User : ", user.name, end = " ")
+def display_user_profile(user):  # Given a user object displays prints profile information
+    print("User : ", user.name, end=" ")
     print('Friends: ', + user.friends_count)
 
 
-def get_friends_list(api): # Prints the users friend list
+def get_friends_list(api):  # Prints the users friend list
     for friend in api.get_friends():
         print(friend.screen_name)
 
 
-def get_favorite_tweets(api): # Prints the favorite tweets and username
+def get_favorite_tweets(api):  # Prints the favorite tweets and username
     all_tweets = api.get_favorites()
     for tweet in all_tweets:
         print(tweet.text + " by " + tweet.user.name)
 
 
-def search_tweets(api, query = "Happy",num =100 ):  # usinght e
-    newFile = open('ans.txt', 'w', encoding="utf-8")
+def search_tweets(api, query="Happy", num=100):  # usinght e
+    newFile = open('search_tweets.txt', 'w', encoding="utf-8")
     fileWriter = csv.writer(newFile)
-    fileWriter.writerow(["Username", "followers", " friends" ,"Created", "Text", "Retweet-count", "Hashtag"])
+    fileWriter.writerow(["Username", "followers", " friends", "Created", "Text", "Retweet-count", "Hashtag"])
 
-    for tweet in api.search_tweets(q=query, count= 100):
+    for tweet in api.search_tweets(q=query, count=100):
         created = tweet.created_at  # tweet created
         text = tweet.text  # tweet text
         retweetcount = tweet.retweet_count  # re-tweet count
@@ -64,13 +69,52 @@ def search_tweets(api, query = "Happy",num =100 ):  # usinght e
     newFile.close()
 
 
-def get_query(): # provides a brief overview on using twitter queries and returns string
+def get_query():  # provides a brief overview on using twitter queries and returns string
     print(" In case you are searching for a specific hashtag use #word")
     print("Inorder to use mulitple filters use AND and OR keywords")
     q = input("Enter query for program")
     return q
 
 
+def sentiment_analysis(api):
+    file = open('results.csv', 'w', encoding="utf-8")
+    fileWriter = csv.writer(file)
+    fileWriter.writerow(["username", "followers", "friends", "tweet","retweet", "hashtag", "polarity", "subjectivity"])
+    i = 0
+
+    query = "olympics"
+    target_num = 20
+    for tweet in tweepy.Cursor(api.search_tweets, q=query, lang="en", result_type="popular", count=target_num).items():
+        # text = unidecode.unidecode(text)
+        try:
+            hashtag = tweet.entities[u'hashtags'][0][u'text']  # hashtags used
+        except:
+            hashtag = "None" # when hashtag does not exist.
+        username = tweet.author.name
+        followers = tweet.author.followers_count
+        friends = tweet.author.friends_count
+
+        text = tweet.text
+        text_blob = TextBlob(text)              # can choose to use sentiment
+        polarity = text_blob.polarity            # polarity from -1 to 1
+        subjectivity = text_blob.subjectivity    # subjectivity from 0 to 1
+        count = tweet.retweet_count
+        # from 0 to 0.5 can be objective / else subjective
+
+        fileWriter.writerow([username, followers, friends, text, count, hashtag, polarity, subjectivity])
+        i = i + 1
+        if i == target_num:
+            break
+    file.close()
+
+def review_file():
+    data = pd.read_csv('results.csv')
+    print(data.corr())
+    # We can oberve that
+    #plt.scatter(data.retweet, data.polarity) # We can see
+
 api = load_auth_file()
-#get_favorite_tweets(api)
-search_tweets(api)
+# get_favorite_tweets(api)
+# search_tweets(api)
+sentiment_analysis(api)
+review_file()

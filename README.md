@@ -14,7 +14,7 @@ Using Python & R
 In order to run the code make sure to clone the repository and go to correct subfolder. 
 After loading the correct authentication tokens from the Developer Portal, enter them into the auth file.
 
-Here is a guide on how to set up an [Youtube API Key](https://developers.google.com/youtube/v3/getting-started)
+Here is a guide on how to set up an [Youtube API Key](https://developers.google.com/youtube/v3/getting-started) and more about [Youtube API and Python](https://developers.google.com/youtube/v3/quickstart/python)
 
 Run python3 filename.py
 

@@ -21,5 +21,6 @@ def average_data():
     print(" Average weight "+ str(weight / n))
     print(" Average brain size "+ str(brain / n))
     print(" Average iq "+ str(iq / n))
+    print(" Average height/weight ratio " + str(height/ weight))
 
 average_data()

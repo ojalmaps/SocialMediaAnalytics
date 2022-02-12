@@ -8,14 +8,18 @@ library(ggplot2)
 # Loads data into data frame 
 cust_data = read.table(file.choose(), header = TRUE, sep ="\t") # allows us to choose file 
 View(cust_data) 
+# file.choose() - allows to select and open any file on the dektop 
+
 
 # Displaying some basic graphs
-ggplot(cust_data)+ geom_histogram(aes(x = age), binwidth =  5)
+ggplot(cust_data)+ geom_histogram(aes(x = age), binwidth =  5,fill = "#00AFBB") 
 ggplot(cust_data) + geom_bar(aes(x = sex))
 
 # Display categories for the given x value 
-ggplot(cust_data) + geom_bar(aes(x = marital.stat)) # graphs all the difference martial status
+ggplot(cust_data) + geom_bar(aes(x = marital.stat), fill = "#34eb86") 
 ggplot(cust_data) + geom_bar(aes(x = state.of.res))
+ggplot(cust_data) + geom_bar(aes(x =num.vehicles), fill = "#ebb734")
+
 
 # Displays the correlation between 2 columns 
 cor(cust_data$age, cust_data$income)

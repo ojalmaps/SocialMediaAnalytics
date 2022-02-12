@@ -8,7 +8,7 @@ Here is a link to the official Tweepy Documentation.[Click here to read more](ht
 - textblob
 
 ###### Methods in the file:
-* load_auth_file() - needs to be called to create API Ob
+* load_auth_file() - needs to be called to create API Object
 * number_pending_requests() - prints the number of pending friend request
 * display_user_profile() - displays the user's information
 * get_friends_list() - print all the friends for given user
